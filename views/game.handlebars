@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Add your existing head content here -->
+    <!-- Example: Bootstrap CSS, custom style links -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .card {
+            background-color: #fafafa;
+            border: 2px solid #333;
+        }
+
+        .btn-warning {
+            background-color: #f0a500;
+            border-color: #8c6c00;
+        }
+
+        .btn-warning:hover {
+            background-color: #ffbf00;
+        }
+
+        .card-header {
+            background-color: #000;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Create Modal (Hidden) -->
+    <div class="text-center bg-secondary p-3 mb-5">
+        <div class="row text-center fs-5 mt-2 text-black">
+            <p data-user-id={{user_id}}>Hello {{user_name}}! Join in on The Carolina Cougars Gamer Talks!!!</p>
+        </div>
+        <div class="row mt-5 justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow">
+                    <h5 class="card-header bg-dark text-white">Search For a Game</h5>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="inputGame" class="form-label">Game Name</label>
+                                <input id="inputGame" type="text" class="form-control" />
+                            </div>
+                            <div class="text-center">
+                                <button id="search-button" type="submit" class="btn btn-warning">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Body -->
+<div class="container">
+    {{#if gameDetails}}
+    <h2 class="text-center">{{gameDetails.name}}</h2>
+    <img id="game-pic" src={{gameDetails.background_image}} alt="Game Picture" class="img-fluid mt-3 mx-auto d-block" style="max-height: 400px; padding: 10px;">
+
+        {{#each attributes as |attribute|}}
+            <div class="card mb-3">
+                <div class="card-header attribute-title" data-toggle="description">
+                    {{@key}}
+                </div>
+                <div class="card-body attribute-description" style="display: none;">
+                    <p class="card-text text-warning"> {{attribute}} </p>
+                </div>
+            </div>
+        {{/each}}
+ 
+  <div class="row mt-5 justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow">
+                    <h5 class="card-header bg-dark text-white text-center">Leave a Comment</h5>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="inputComment" class="form-label">Comment</label>
+                                <input id="inputComment" data-game-id={{gameDetails.id}} data-user-id={{userId}} type="text" class="form-control" />
+                            </div>
+                            <div class="text-center">
+                                <button id="comment-button" type="submit" class="btn btn-warning">Comment</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+
+      {{#if comments}}
+            <h2 class="text-center">Comments</h2>
+
+        {{#each comments as |comment|}}
+            <div class="card mb-3">
+                <div class="card-header attribute-title" data-toggle="description">
+                    MY COMMENT {{{comment}}}
+                </div>
+                <div class="card-body attribute-description" style="display: none;">
+                    <p class="card-text text-warning"> {{comment}} </p>
+                </div>
+            </div>
+        {{/each}}
+      {{/if}}
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.attribute-title').forEach(function(title) {
+                title.addEventListener('click', function() {
+                    const description = this.nextElementSibling;
+                    description.style.display = description.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+        });
+    </script>
+    <script src="/js/game.js"></script>
+</body>
+</html>

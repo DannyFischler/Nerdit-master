@@ -1,0 +1,86 @@
+<!-- Greeting -->
+
+<div class="text-center bg-secondary p-3 mb-5">
+    {{#unless logged_in}}
+    <div class="m-3 text-center text-dark fs-4">
+        Welcome to Carolina Cougars Game Den!!! Sign up and log in to join in on. Have fun!!!
+    </div>
+    {{/unless}}
+</div>
+
+<!-- Body -->
+<div class="container">
+
+    <!--creating a card by looping through Each Object in games Array-->
+    {{#each games as |game|}}
+
+    <div class="row mt-4">
+
+        <!--game Collapse Button With Title and Date-->
+        <button class="btn btn-warning mb-1" type="button" data-js-gameid = {{game.id}} data-bs-toggle="collapse" data-bs-target="#ids{{game.id}}" aria-expanded="false" aria-controls="collapse">
+            <span class="fw-bold">{{game.title}}</span>
+            <br>
+            <span class="fst-italic">{{{format_date game.date_created}}}</span>
+        </button>
+
+        <!--Blog Card Button with Username, content and comments-->
+        <div class="collapse mt-1" id="ids{{game.id}}"> 
+            <div class="card text-center px-0 py-0 shadow p-3 mb-3 bg-body rounded">
+                <div class="card-header bg-light">
+                    <span>{{game.user.user_name}}</span>
+                </div>
+                <div class="card-body pe-0">
+                    <p class="card-text">{{game.content}}</p>
+                    <h6 class="card-title">Comments</h6>
+                    <div>
+                        {{#each game.comments as |comment|}}       
+                        <div class="fw-ligher fst-italic">{{comment.comment}} - <span class = "text-warning fw-bold">USER {{comment.user_id}}</span> | <span>{{format_date comment.date_created}}</span></div>
+                        {{/each}}
+                        
+                    </div>
+                </div>
+            </div>
+
+             <!--Buttons Container For Comment, Edit, Delete-->
+            
+            <div class="text-center buttons-container" data-gameid = {{game.id}} data-userid = {{game.user_id}}>
+               <!--Comment Button-->
+                <button type="button" class=" comment-blog btn btn-info mb-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#commentModal{{game.id}}">
+                    <i class="far fa-comment"></i>
+                </button>
+
+                    <!--rendering Upon Comment-->
+                    <div class="modal fade mt-5" id="commentModal{{game.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+
+                            <!--Content-->
+                            <div class="modal-content" data-currentuser-id={{user_id}} data-game-id={{game.id}}>
+                                <form class="p-2">
+                                    <div class="mb-3">
+                                        <label for="contentinput" class="form-label fw-bolder">Comment</label>
+                                        <textarea class="form-control new-comment" placeholder="Enter Comment..."rows="3"></textarea>
+                                    </div>
+                                </form>
+
+                                <!--Footer With Buttons-->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-info post-comment">Comment</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+            </div>
+            
+        </div>
+    </div>
+
+    {{/each}}
+
+</div>
+
+<!-- Scripts -->
+<script src="/js/home.js"></script>
